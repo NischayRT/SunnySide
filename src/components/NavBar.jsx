@@ -8,7 +8,6 @@ function NavBar({ getUserLocation, children }) {
       <h1>
         <span className="Logo-Container">
           <img src="Logo.png" className="Logo" alt="Logo" />
-          SunnySide
         </span>
       </h1>
       <div className="Search-Bar">{children}</div>
