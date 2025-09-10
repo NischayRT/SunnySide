@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 function SearchBar({ fetchData, setLocation }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const containerRef = useRef(null);
 
   // Handle user typing
   const handleChange = async (e) => {
@@ -33,15 +34,46 @@ function SearchBar({ fetchData, setLocation }) {
     setLocation({ name: city.name, country: city.country });
   };
 
+  // Clear search
+  const handleClear = () => {
+    setQuery("");
+    setResults([]);
+  };
+
+  // Collapse on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setResults([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="search-container">
-      <input
-        type="text"
-        placeholder="Search city..."
-        value={query}
-        onChange={handleChange}
-        className="search-input"
-      />
+    <div className="search-container" ref={containerRef}>
+      <span>
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            placeholder="Search city..."
+            value={query}
+            onChange={handleChange}
+            className="search-input"
+          />
+          {query && (
+            <button type="button" className="clear-btn" onClick={handleClear}>
+              ×
+            </button>
+          )}
+        </div>
+      </span>
 
       {results.length > 0 && (
         <ul className="search-results">

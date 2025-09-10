@@ -12,7 +12,7 @@ function NavBar({ getUserLocation, children }) {
         </span>
       </h1>
       <div className="Search-Bar">{children}</div>
-      <button onClick={getUserLocation}>
+      <button onClick={getUserLocation} className="Location-Btn">
         <FontAwesomeIcon icon={faLocationDot} className="icon" />
         My Location
       </button>
