@@ -30,8 +30,13 @@ function SearchBar({ fetchData, setLocation }) {
   const handleSelect = (city) => {
     setQuery(city.name);
     setResults([]);
-    fetchData(city.latitude, city.longitude);
-    setLocation({ name: city.name, country: city.country });
+    fetchData(city.latitude, city.longitude, city.name, city.country);
+    setLocation({
+      name: city.name,
+      country: city.country,
+      lat: city.latitude,
+      lng: city.longitude,
+    });
   };
 
   // Clear search
