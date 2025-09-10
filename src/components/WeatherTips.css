@@ -1,0 +1,121 @@
+.weather-tips {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  width: max-content;
+}
+
+.weather-tips h3 {
+  margin: 0 0 18px 0;
+  color: #2b2d42;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tip-card {
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tip-severity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  min-width: 85px;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+}
+
+.tip-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 16px;
+  gap: 12px;
+  flex: 1;
+}
+
+.tip-icon {
+  font-size: 18px;
+  color: #495057;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.tip-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #495057;
+}
+
+/* Severity colors */
+.tip-severity.high {
+  background: linear-gradient(135deg, #ff6b6b, #e85959);
+}
+
+.tip-severity.medium {
+  background: linear-gradient(135deg, #ffa94d, #f08c00);
+}
+
+.tip-severity.low {
+  background: linear-gradient(135deg, #51cf66, #2f9e44);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .weather-tips {
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 14px;
+  }
+
+  .weather-tips h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .tip-card {
+    flex-direction: column;
+    border-radius: 10px;
+  }
+
+  .tip-severity {
+    min-width: 100%;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .tip-content {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .tip-content p {
+    font-size: 13px;
+  }
+}
