@@ -5,7 +5,6 @@ It provides **real-time forecasts, 7-day outlook, 24-hour details, personalized 
 
 👉 Live Demo: [Weather Now](https://weather-now-aganitha.netlify.app/)
 =======
-https://weather-now-aganitha.netlify.app/
 
 ---
 
@@ -53,7 +52,7 @@ Run the development server:
 ```
 
 Open in your browser:  
-👉 [http://localhost:5173]
+👉 [http://localhost:5173](http://localhost:5173)
 
 ---
 
