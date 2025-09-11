@@ -25,8 +25,7 @@ It provides **real-time forecasts, 7-day outlook, 24-hour details, personalized 
 ## 🛠 Tech Stack
 
 - **Frontend:** React + Vite
-- **Styling:** Tailwind CSS (or custom CSS)
-- **Charts:** Recharts (or Chart.js)
+- **Styling:** Custom CSS
 - **API:** [Open-Meteo](https://open-meteo.com/)
 
 ---
