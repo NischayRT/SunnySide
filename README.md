@@ -3,7 +3,11 @@
 A fast and interactive weather application built with **Vite + React**.  
 It provides **real-time forecasts, 7-day outlook, 24-hour details, personalized weather tips, and graphical summaries**.
 
+<<<<<<< HEAD
 👉 Live Demo: [Weather Now](https://weather-now-aganitha.netlify.app/)
+=======
+https://weather-now-aganitha.netlify.app/
+>>>>>>> f2f4623acf0a3a79d11565796fa477c90e7e7658
 
 ---
 
