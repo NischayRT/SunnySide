@@ -202,7 +202,7 @@
 }
 
 .Detail-Item {
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
   padding: 18px;
   border-radius: 12px;
   display: flex;
@@ -458,6 +458,20 @@
   background-color: #4a6cf7;
   color: white;
 }
+
+.Single-Wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem; /* space between them */
+  width: 100%; /* ensure it spans the row */
+}
+
+.Single-Wrap > * {
+  flex: 1; /* each child takes equal width */
+  min-width: 0; /* prevents overflow */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .App {
@@ -539,6 +553,13 @@
   .NavBar-1 h1 {
     font-size: 1.5rem;
   }
+
+  .Single-Wrap {
+    display: block;
+    flex-direction: row;
+    gap: 1rem; /* space between them */
+    width: 100%; /* ensure it spans the row */
+  }
 }
 .hourly-forecast,
 .seven-day-forecast {
@@ -616,20 +637,6 @@
   width: auto;
   display: block;
 }
-
-.Single-Wrap {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem; /* space between them */
-  width: 100%; /* ensure it spans the row */
-}
-
-.Single-Wrap > * {
-  flex: 1; /* each child takes equal width */
-  min-width: 0; /* prevents overflow */
-}
-
 .daily-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
