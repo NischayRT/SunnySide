@@ -28,6 +28,19 @@ const TemperatureGraph = ({ weatherData }) => {
   const globalMax = Math.max(...allTemps);
   const tempRange = globalMax - globalMin;
 
+  // Scaling function (same as for points)
+  const scaleY = (temp) => 100 - ((temp - globalMin) / tempRange) * 90 - 2; // keep top/bottom padding
+
+  // Grid lines aligned with labels
+  const gridLines = [
+    { label: Math.round(globalMax), y: scaleY(globalMax) },
+    {
+      label: Math.round((globalMax + globalMin) / 2),
+      y: scaleY((globalMax + globalMin) / 2),
+    },
+    { label: Math.round(globalMin), y: scaleY(globalMin) },
+  ];
+
   // Format date for display
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -52,8 +65,8 @@ const TemperatureGraph = ({ weatherData }) => {
 
   // Calculate point positions
   const calculatePointPosition = (temp, index) => {
-    const y = 100 - ((temp - globalMin) / tempRange) * 90; // Scale to 5-95% of container
-    const x = (index / (data.length - 1)) * 100; // Distribute evenly across width
+    const y = scaleY(temp);
+    const x = 3 + (index / (data.length - 1)) * 90; // add horizontal padding
     return { x, y };
   };
 
@@ -67,7 +80,6 @@ const TemperatureGraph = ({ weatherData }) => {
       const p0 = points[i - 1];
       const p1 = points[i];
 
-      // Control points for smooth curve
       const controlPoint1 = {
         x: p0.x + (p1.x - (i > 1 ? points[i - 2].x : p0.x)) / 2,
         y: p0.y,
@@ -84,7 +96,6 @@ const TemperatureGraph = ({ weatherData }) => {
     return path;
   };
 
-  // Generate points for max and min temperatures
   const maxPoints = data.map((day, index) =>
     calculatePointPosition(day.maxTemp, index)
   );
@@ -98,17 +109,24 @@ const TemperatureGraph = ({ weatherData }) => {
 
       <div className="graph-container" ref={graphRef}>
         <div className="y-axis">
-          <span>{Math.round(globalMax)}°</span>
-          <span>{Math.round((globalMax + globalMin) / 2)}°</span>
-          <span>{Math.round(globalMin)}°</span>
+          {gridLines.map((line, i) => (
+            <span key={i}>{line.label}°</span>
+          ))}
         </div>
 
         <div className="graph-content">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-            {/* Grid lines */}
-            <line x1="0" y1="0" x2="100" y2="0" className="grid-line" />
-            <line x1="0" y1="50" x2="100" y2="50" className="grid-line" />
-            <line x1="0" y1="100" x2="100" y2="100" className="grid-line" />
+            {/* Dynamic grid lines */}
+            {gridLines.map((line, i) => (
+              <line
+                key={i}
+                x1="0"
+                x2="100"
+                y1={line.y}
+                y2={line.y}
+                className="grid-line"
+              />
+            ))}
 
             {/* Max temperature line */}
             <path
@@ -124,7 +142,7 @@ const TemperatureGraph = ({ weatherData }) => {
               fill="none"
             />
 
-            {/* Max temperature points */}
+            {/* Max points */}
             {data.map((day, index) => {
               const { x, y } = maxPoints[index];
               return (
@@ -132,7 +150,7 @@ const TemperatureGraph = ({ weatherData }) => {
                   key={`max-${index}`}
                   cx={x}
                   cy={y}
-                  r="2.5"
+                  r="1.3"
                   className="point max-temp-point"
                   onMouseEnter={(e) => handlePointHover(e, day, "max")}
                   onMouseLeave={() => setHoveredPoint(null)}
@@ -140,7 +158,7 @@ const TemperatureGraph = ({ weatherData }) => {
               );
             })}
 
-            {/* Min temperature points */}
+            {/* Min points */}
             {data.map((day, index) => {
               const { x, y } = minPoints[index];
               return (
@@ -148,7 +166,7 @@ const TemperatureGraph = ({ weatherData }) => {
                   key={`min-${index}`}
                   cx={x}
                   cy={y}
-                  r="2.5"
+                  r="1.3"
                   className="point min-temp-point"
                   onMouseEnter={(e) => handlePointHover(e, day, "min")}
                   onMouseLeave={() => setHoveredPoint(null)}

@@ -159,30 +159,38 @@ function App() {
         </ul>
       </div>
 
-      {loading ? (
-        <div className="loading">Loading weather data...</div>
-      ) : activeTab === "today" && location && weatherData ? (
-        <>
-          <WeatherDetails
-            location={location}
-            weatherData={weatherData}
-            toggleFavorite={toggleFavorite}
-            isFavorite={isFavorite}
-          />
-          <div className="Single-Wrap">
-            <WeatherTips weatherData={weatherData} />
-            <TemperatureGraph weatherData={weatherData} />
-          </div>
-          <HourlyForecast weatherData={weatherData} />
-          <SevenDayForecast weatherData={weatherData} />
-        </>
-      ) : (
-        <FavoritesList
-          favorites={favorites}
-          loadFavorite={loadFavorite}
-          removeFavorite={removeFavorite}
-        />
-      )}
+      {(() => {
+        let content;
+        if (loading) {
+          content = <div className="loading">Loading weather data...</div>;
+        } else if (activeTab === "today" && location && weatherData) {
+          content = (
+            <>
+              <WeatherDetails
+                location={location}
+                weatherData={weatherData}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
+              />
+              <div className="Single-Wrap">
+                <WeatherTips weatherData={weatherData} />
+                <TemperatureGraph weatherData={weatherData} />
+              </div>
+              <HourlyForecast weatherData={weatherData} />
+              <SevenDayForecast weatherData={weatherData} />
+            </>
+          );
+        } else {
+          content = (
+            <FavoritesList
+              favorites={favorites}
+              loadFavorite={loadFavorite}
+              removeFavorite={removeFavorite}
+            />
+          );
+        }
+        return content;
+      })()}
     </div>
   );
 }
