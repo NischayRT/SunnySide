@@ -275,7 +275,8 @@ function WeatherDetails({ location, weatherData, toggleFavorite, isFavorite }) {
 
             <div className="Detail-Item">
               <span className="Label">
-                <FontAwesomeIcon icon={faWind} /> Wind Speed:
+                <FontAwesomeIcon icon={faWind} />
+                Wind:
               </span>
               <span className="Value">
                 {formatValue(
@@ -290,14 +291,16 @@ function WeatherDetails({ location, weatherData, toggleFavorite, isFavorite }) {
             {/* Sunrise and Sunset */}
             <div className="Detail-Item sun-times">
               <span className="Label">
-                <FontAwesomeIcon icon={faSun} className="sun-icon" /> Sunrise:
+                <FontAwesomeIcon icon={faSun} className="sun-icon" />
+                Sunrise:
               </span>
               <span className="Value">{formatTime(sunriseTime)}</span>
             </div>
 
             <div className="Detail-Item moon-time">
               <span className="Label">
-                <FontAwesomeIcon icon={faMoon} className="moon-icon" /> Sunset:
+                <FontAwesomeIcon icon={faMoon} className="moon-icon" />
+                Sunset:
               </span>
               <span className="Value">{formatTime(sunsetTime)}</span>
             </div>
@@ -306,7 +309,7 @@ function WeatherDetails({ location, weatherData, toggleFavorite, isFavorite }) {
             <div className="Detail-Item">
               <span className="Label">
                 <FontAwesomeIcon icon={faTemperatureArrowUp} />
-                <span> High / Low: </span>
+                <span>High/Low:</span>
                 <FontAwesomeIcon
                   icon={faTemperatureArrowDown}
                   className="high-icon"

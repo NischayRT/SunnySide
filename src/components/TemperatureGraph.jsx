@@ -20,27 +20,31 @@ const TemperatureGraph = ({ weatherData }) => {
   }));
 
   // Find the overall min and max temperatures for scaling
+  // Find the overall min and max temperatures for scaling
   const allTemps = [
     ...temperature_2m_max.slice(0, 7),
     ...temperature_2m_min.slice(0, 7),
   ];
   const globalMin = Math.min(...allTemps);
   const globalMax = Math.max(...allTemps);
-  const tempRange = globalMax - globalMin;
+
+  // Add padding
+  const adjustedMin = globalMin - 2;
+  const adjustedMax = globalMax + 2;
+  const tempRange = adjustedMax - adjustedMin;
 
   // Scaling function (same as for points)
-  const scaleY = (temp) => 100 - ((temp - globalMin) / tempRange) * 90 - 2; // keep top/bottom padding
+  const scaleY = (temp) => 100 - ((temp - adjustedMin) / tempRange) * 90 - 2; // keep top/bottom padding
 
-  // Grid lines aligned with labels
+  // Grid lines aligned with adjusted labels
   const gridLines = [
-    { label: Math.round(globalMax), y: scaleY(globalMax) },
+    { label: Math.round(adjustedMax), y: scaleY(adjustedMax) },
     {
-      label: Math.round((globalMax + globalMin) / 2),
-      y: scaleY((globalMax + globalMin) / 2),
+      label: Math.round((adjustedMax + adjustedMin) / 2),
+      y: scaleY((adjustedMax + adjustedMin) / 2),
     },
-    { label: Math.round(globalMin), y: scaleY(globalMin) },
+    { label: Math.round(adjustedMin), y: scaleY(adjustedMin) },
   ];
-
   // Format date for display
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -117,9 +121,9 @@ const TemperatureGraph = ({ weatherData }) => {
         <div className="graph-content">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none">
             {/* Dynamic grid lines */}
-            {gridLines.map((line, i) => (
+            {gridLines.map((line) => (
               <line
-                key={i}
+                key={line.label}
                 x1="0"
                 x2="100"
                 y1={line.y}
@@ -147,10 +151,10 @@ const TemperatureGraph = ({ weatherData }) => {
               const { x, y } = maxPoints[index];
               return (
                 <circle
-                  key={`max-${index}`}
+                  key={`max-${day.date}`}
                   cx={x}
                   cy={y}
-                  r="1.3"
+                  r="1.5"
                   className="point max-temp-point"
                   onMouseEnter={(e) => handlePointHover(e, day, "max")}
                   onMouseLeave={() => setHoveredPoint(null)}
@@ -163,10 +167,10 @@ const TemperatureGraph = ({ weatherData }) => {
               const { x, y } = minPoints[index];
               return (
                 <circle
-                  key={`min-${index}`}
+                  key={`min-${day.date}`}
                   cx={x}
                   cy={y}
-                  r="1.3"
+                  r="1.5"
                   className="point min-temp-point"
                   onMouseEnter={(e) => handlePointHover(e, day, "min")}
                   onMouseLeave={() => setHoveredPoint(null)}
@@ -179,7 +183,7 @@ const TemperatureGraph = ({ weatherData }) => {
           <div className="x-axis">
             {data.map((day, index) => (
               <div
-                key={index}
+                key={day.date}
                 className="day-label"
                 style={{ left: `${(index / (data.length - 1)) * 100}%` }}
               >
@@ -201,10 +205,14 @@ const TemperatureGraph = ({ weatherData }) => {
           >
             <div className="tooltip-date">{formatDate(hoveredPoint.date)}</div>
             <div className="tooltip-temp">
-              <span className="max">
+              <span
+                className={`max ${hoveredPoint.type === "max" ? "active" : ""}`}
+              >
                 Max: {Math.round(hoveredPoint.maxTemp)}°
               </span>
-              <span className="min">
+              <span
+                className={`min ${hoveredPoint.type === "min" ? "active" : ""}`}
+              >
                 Min: {Math.round(hoveredPoint.minTemp)}°
               </span>
             </div>

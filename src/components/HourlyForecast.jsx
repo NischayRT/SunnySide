@@ -1,12 +1,17 @@
 import React from "react";
 import { getWeatherIcon, getWeatherDescription } from "../utils/weatherIcons";
 import "../App.css";
+
 const HourlyForecast = ({ weatherData }) => {
   if (!weatherData || !weatherData.hourly) {
     return <div>Loading hourly forecast...</div>;
   }
 
   const { time, temperature_2m, weathercode } = weatherData.hourly;
+
+  // Get current time
+  const now = new Date();
+  const currentHour = now.getHours();
 
   // Get today's date at midnight (start of day)
   const today = new Date();
@@ -33,6 +38,14 @@ const HourlyForecast = ({ weatherData }) => {
     if (dataIndex < time.length) {
       const hourTime = new Date(time[dataIndex]);
       const isDay = hourTime.getHours() >= 6 && hourTime.getHours() < 18;
+      const hour = hourTime.getHours();
+
+      // Check if this is the current hour
+      const isCurrentHour =
+        hour === currentHour &&
+        hourTime.getDate() === now.getDate() &&
+        hourTime.getMonth() === now.getMonth() &&
+        hourTime.getFullYear() === now.getFullYear();
 
       // Use actual data if available
       hourlyData.push({
@@ -40,18 +53,21 @@ const HourlyForecast = ({ weatherData }) => {
         temp: temperature_2m[dataIndex],
         weatherCode: weathercode[dataIndex],
         isDay: isDay,
+        isCurrentHour: isCurrentHour,
       });
     } else {
       // Create placeholder for missing hours
       const placeholderTime = new Date(today);
       placeholderTime.setHours(i);
       const isDay = i >= 6 && i < 18;
+      const isCurrentHour = i === currentHour;
 
       hourlyData.push({
         time: placeholderTime.toISOString(),
         temp: null,
         weatherCode: 0, // Default to clear
         isDay: isDay,
+        isCurrentHour: isCurrentHour,
       });
     }
   }
@@ -63,7 +79,15 @@ const HourlyForecast = ({ weatherData }) => {
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12; // Convert 0 to 12
-    return `${hours} ${ampm}`;
+
+    // Add "Now" for current hour
+    const isCurrentHour =
+      date.getHours() === currentHour &&
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+
+    return isCurrentHour ? "Now" : `${hours} ${ampm}`;
   };
 
   return (
@@ -71,7 +95,10 @@ const HourlyForecast = ({ weatherData }) => {
       <h3>24-Hour Forecast (Today)</h3>
       <div className="hourly-scroll">
         {hourlyData.map((hour, index) => (
-          <div key={index} className="hourly-item">
+          <div
+            key={index}
+            className={`hourly-item ${hour.isCurrentHour ? "active-now" : ""}`}
+          >
             <div className="hour">{formatTime(hour.time)}</div>
             <div
               className="weather-icon"

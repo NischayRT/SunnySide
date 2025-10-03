@@ -2,18 +2,9 @@
   background-color: white;
   border-radius: 16px;
   padding: 20px;
-  margin: 20px 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e9ecef;
   width: max-content;
-}
-@media (max-width: 480px) {
-  .weather-tips {
-    width: auto;
-    padding: 16px;
-    margin: 16px 0;
-    border-radius: 14px;
-  }
 }
 
 .weather-tips h3 {
@@ -39,6 +30,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
+  /* REMOVED fixed height */
+  min-height: auto; /* Allow natural height */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -61,24 +54,25 @@
 
 .tip-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* Center vertically */
   padding: 14px 16px;
   gap: 12px;
   flex: 1;
+  min-height: 60px; /* Minimum height for consistency */
 }
 
 .tip-icon {
   font-size: 18px;
   color: #495057;
-  margin-top: 2px;
   flex-shrink: 0;
 }
 
 .tip-content p {
   margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4; /* Tighter line height */
   color: #495057;
+  flex: 1;
 }
 
 /* Severity colors */
@@ -97,6 +91,7 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .weather-tips {
+    width: auto;
     padding: 16px;
     margin: 16px 0;
     border-radius: 14px;
@@ -108,22 +103,77 @@
   }
 
   .tip-card {
-    flex-direction: column;
+    flex-direction: row; /* Keep horizontal layout on mobile */
     border-radius: 10px;
   }
 
   .tip-severity {
-    min-width: 100%;
-    padding: 10px;
+    min-width: 80px; /* Slightly smaller on mobile */
+    padding: 10px 8px;
     font-size: 12px;
   }
 
   .tip-content {
     padding: 12px;
     gap: 10px;
+    min-height: 50px; /* Smaller minimum height on mobile */
+    align-items: flex-start; /* Align to top for multi-line text */
   }
 
   .tip-content p {
     font-size: 13px;
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-tips {
+    padding: 14px;
+    margin: 14px 0;
+    border-radius: 12px;
+  }
+
+  .tip-card {
+    flex-direction: column; /* Stack vertically on very small screens */
+    text-align: center;
+  }
+
+  .tip-severity {
+    min-width: 100%;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .tip-content {
+    padding: 10px 8px;
+    gap: 8px;
+    min-height: auto;
+    flex-direction: column; /* Stack icon and text */
+  }
+
+  .tip-content p {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .tip-icon {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .weather-tips {
+    padding: 12px;
+  }
+
+  .tip-content p {
+    font-size: 11px;
+  }
+
+  .tip-severity {
+    font-size: 10px;
+    padding: 6px;
   }
 }

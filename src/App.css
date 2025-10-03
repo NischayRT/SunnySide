@@ -8,7 +8,62 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
 }
+/* Current Hour Active State */
+.hourly-item.active-now {
+  /* background-color: #e3eb6b !important; */
+  background: linear-gradient(135deg, #f6ff71 0%, #ffc107 100%);
 
+  border: 2px solid #f3ff49;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+  border-radius: 20px;
+}
+.hourly-item.active-now .hour {
+  font-weight: bold;
+  color: #333;
+}
+
+.hourly-item.active-now .temp {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Today Active State in 7-Day Forecast */
+.daily-item.active-today {
+  background: linear-gradient(135deg, #f6ff71 0%, #ffc107 100%);
+  border: 2px solid #f3ff49;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+  border-radius: 20px;
+}
+
+.daily-item.active-today .day {
+  font-weight: bold;
+  color: #333;
+}
+
+.daily-item.active-today .max-temp,
+.daily-item.active-today .min-temp {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Hover effects for other items */
+.hourly-item:not(.active-now):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: #e0e7ff;
+  border: 1px solid #4a6cf7;
+}
+
+.daily-item:not(.active-today):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: #e0e7ff;
+  border: 1px solid #4a6cf7;
+}
 /* Navigation Bars */
 .NavBar-1 {
   display: flex;
@@ -505,7 +560,7 @@
   }
 
   .ButtonItem {
-    width: 100%;
+    width: 40%;
     text-align: center;
   }
 
@@ -543,16 +598,25 @@
 }
 
 @media (max-width: 480px) {
-  .Weather-Details {
-    grid-template-columns: 1fr;
+  .Main-Body {
+    font-size: 10px;
+  }
+  .Detail-Item {
+    padding: 15px;
+    align-self: normal;
+    justify-content: space-evenly;
   }
 
+  .search-input {
+    width: 100%;
+  }
   .Location {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    margin-top: 30px;
   }
 
   .Temperature {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .NavBar-1 h1 {

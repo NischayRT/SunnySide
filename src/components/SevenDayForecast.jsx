@@ -1,5 +1,10 @@
 import React from "react";
 import { getWeatherIcon, getWeatherDescription } from "../utils/weatherIcons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTemperatureArrowDown,
+  faTemperatureArrowUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const SevenDayForecast = ({ weatherData }) => {
   if (!weatherData || !weatherData.daily) {
@@ -16,17 +21,29 @@ const SevenDayForecast = ({ weatherData }) => {
     weatherCode: weathercode[i],
   }));
 
-  // Format day name
+  // Get current date for comparison
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Format day name and check if it's today
   const formatDay = (dateStr) => {
     const date = new Date(dateStr);
-    const today = new Date();
+    date.setHours(0, 0, 0, 0);
+
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    if (date.toDateString() === today.toDateString()) return "Today";
-    if (date.toDateString() === tomorrow.toDateString()) return "Tomorrow";
+    if (date.getTime() === today.getTime()) return "Today";
+    if (date.getTime() === tomorrow.getTime()) return "Tomorrow";
 
     return date.toLocaleDateString("en-US", { weekday: "short" });
+  };
+
+  // Check if a date is today
+  const isToday = (dateStr) => {
+    const date = new Date(dateStr);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime() === today.getTime();
   };
 
   return (
@@ -34,7 +51,10 @@ const SevenDayForecast = ({ weatherData }) => {
       <h3>7-Day Forecast</h3>
       <div className="daily-forecast">
         {dailyData.map((day, index) => (
-          <div key={index} className="daily-item">
+          <div
+            key={index}
+            className={`daily-item ${isToday(day.date) ? "active-today" : ""}`}
+          >
             <div className="day">{formatDay(day.date)}</div>
             <div
               className="weather-icon"
@@ -43,8 +63,14 @@ const SevenDayForecast = ({ weatherData }) => {
               {getWeatherIcon(day.weatherCode, true)}
             </div>
             <div className="temps">
-              <span className="max-temp">{Math.round(day.maxTemp)}°</span>
-              <span className="min-temp">{Math.round(day.minTemp)}°</span>
+              <span className="max-temp">
+                <FontAwesomeIcon icon={faTemperatureArrowUp} />{" "}
+                {Math.round(day.maxTemp)}°
+              </span>
+              <span className="min-temp">
+                {Math.round(day.minTemp)}°{" "}
+                <FontAwesomeIcon icon={faTemperatureArrowDown} />
+              </span>
             </div>
           </div>
         ))}
