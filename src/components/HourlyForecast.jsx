@@ -16,24 +16,27 @@ const HourlyForecast = ({ weatherData }) => {
   // Get today's date at midnight (start of day)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const todayEnd = new Date(today);
-  todayEnd.setHours(23, 59, 59, 999);
 
-  // Find the index where today's data starts
-  const startIndex = time.findIndex((timeStr) => {
+  // Find the index of the current hour in the data
+  const currentHourIndex = time.findIndex((timeStr) => {
     const date = new Date(timeStr);
-    return date >= today;
+    return (
+      date.getHours() === currentHour &&
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
   });
 
-  // If we can't find today's data, show a message
-  if (startIndex === -1) {
-    return <div>No hourly data available for today.</div>;
+  // If we can't find current hour data, show a message
+  if (currentHourIndex === -1) {
+    return <div>No hourly data available for current hour.</div>;
   }
 
-  // Get 24 hours of data starting from the first available hour of today
+  // Get 24 hours of data starting from current hour
   const hourlyData = [];
   for (let i = 0; i < 24; i++) {
-    const dataIndex = startIndex + i;
+    const dataIndex = currentHourIndex + i;
 
     if (dataIndex < time.length) {
       const hourTime = new Date(time[dataIndex]);
@@ -47,7 +50,6 @@ const HourlyForecast = ({ weatherData }) => {
         hourTime.getMonth() === now.getMonth() &&
         hourTime.getFullYear() === now.getFullYear();
 
-      // Use actual data if available
       hourlyData.push({
         time: time[dataIndex],
         temp: temperature_2m[dataIndex],
@@ -57,10 +59,11 @@ const HourlyForecast = ({ weatherData }) => {
       });
     } else {
       // Create placeholder for missing hours
-      const placeholderTime = new Date(today);
-      placeholderTime.setHours(i);
-      const isDay = i >= 6 && i < 18;
-      const isCurrentHour = i === currentHour;
+      const placeholderTime = new Date(now);
+      placeholderTime.setHours(currentHour + i);
+      const isDay =
+        placeholderTime.getHours() >= 6 && placeholderTime.getHours() < 18;
+      const isCurrentHour = i === 0; // First item is current hour
 
       hourlyData.push({
         time: placeholderTime.toISOString(),
@@ -73,33 +76,27 @@ const HourlyForecast = ({ weatherData }) => {
   }
 
   // Format time for display (12-hour format)
-  const formatTime = (timeStr) => {
+  const formatTime = (timeStr, index) => {
     const date = new Date(timeStr);
     let hours = date.getHours();
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12; // Convert 0 to 12
 
-    // Add "Now" for current hour
-    const isCurrentHour =
-      date.getHours() === currentHour &&
-      date.getDate() === now.getDate() &&
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear();
-
-    return isCurrentHour ? "Now" : `${hours} ${ampm}`;
+    // Add "Now" for current hour (first item)
+    return index === 0 ? "Now" : `${hours} ${ampm}`;
   };
 
   return (
     <div className="hourly-forecast">
-      <h3>24-Hour Forecast (Today)</h3>
+      <h3>24-Hour Forecast</h3>
       <div className="hourly-scroll">
         {hourlyData.map((hour, index) => (
           <div
             key={index}
             className={`hourly-item ${hour.isCurrentHour ? "active-now" : ""}`}
           >
-            <div className="hour">{formatTime(hour.time)}</div>
+            <div className="hour">{formatTime(hour.time, index)}</div>
             <div
               className="weather-icon"
               title={getWeatherDescription(hour.weatherCode)}
