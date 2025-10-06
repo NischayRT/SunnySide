@@ -89,6 +89,3 @@ const apiUrl =
   <img width="1893" height="902" alt="image" src="https://github.com/user-attachments/assets/d3ccd14a-05ee-4a01-bcfe-2434faca4627" />
 
 ---
-# SunnySide2
-# SunnySide2
-# SunnySide2
